@@ -168,8 +168,10 @@ create.solve_asdp.fast <- function(
         ))
     }
 
-    cat("\nUnscaled s_asdp summary:\n")
-    print(summary(s_asdp))
+    if (verbose){
+        cat("\nUnscaled s_asdp summary:\n")
+        print(summary(s_asdp))
+    }
 
     ## Gamma optimization
 
@@ -302,27 +304,29 @@ create.solve_asdp.fast <- function(
         s_asdp_scaled <- 0 * s_asdp_scaled
     }
 
-    cat("\nScaled s summary:\n")
-    print(summary(s_asdp_scaled))
+    if (verbose){
+        cat("\nScaled s summary:\n")
+        print(summary(s_asdp_scaled))
 
-    cat(sprintf(
-        "lambda_max(B) = %.12g\n",
-        lambda_max
-    ))
+        cat(sprintf(
+            "lambda_max(B) = %.12g\n",
+            lambda_max
+        ))
 
-    cat(sprintf(
-        "gamma_bound   = %.12g\n",
-        gamma_bound
-    ))
+        cat(sprintf(
+            "gamma_bound   = %.12g\n",
+            gamma_bound
+        ))
 
-    cat(sprintf(
-        "gamma         = %.12g\n",
-        gamma
-    ))
+        cat(sprintf(
+            "gamma         = %.12g\n",
+            gamma
+        ))
 
-    cat(sprintf(
-        "positive definite = %s\n", valid
-    ))
+        cat(sprintf(
+            "positive definite = %s\n", valid
+        ))
+    }
     
     if (verbose)
         cat("done.\n")

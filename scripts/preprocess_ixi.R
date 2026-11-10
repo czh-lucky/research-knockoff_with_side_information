@@ -1,7 +1,7 @@
 library(oro.nifti)
 
-img_dir <- "registration_batch/mni_images"
-mask_file <- "../MNI152_T1_2mm_brain_mask.nii.gz"
+img_dir <- "data/mni_images"
+mask_file <- "data/MNI152_T1_2mm_brain_mask.nii.gz"
 
 mask <- readNIfTI(mask_file)
 mask_2d <- mask[,,46]

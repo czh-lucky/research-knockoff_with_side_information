@@ -97,14 +97,14 @@ stopifnot(length(unique(Y)) == 2)
 ## 4. Estimate covariance
 ####################################
 
-Sigma_100 <- corpcor::cov.shrink(
-    X,
-    verbose = FALSE
+Sigma_100 <- matrix(
+    as.numeric(corpcor::cov.shrink(X, verbose = FALSE)),
+    nrow = p
 )
 
-Sigma_481 <- corpcor::cov.shrink(
-    X_ref,
-    verbose = FALSE
+Sigma_481 <- matrix(
+    as.numeric(corpcor::cov.shrink(X_ref, verbose = FALSE)),
+    nrow = p
 )
 
 Sigma_list <- list(
@@ -119,6 +119,25 @@ Sigma_list <- list(
 # Same CV folds for both methods
 set.seed(10000 + ParamsRowIndex)
 foldid <- sample(rep(1:10, length.out = n))
+
+# Signal strength
+eta <- drop(X %*% beta0)
+cat("Linear predictor sd:", sd(eta), "\n")
+
+# X-only Lasso
+mdl_X <- cv.glmnet(
+    X, Y,
+    family = "binomial",
+    alpha = 1,
+    foldid = foldid
+)
+
+beta_X <- as.numeric(coef(mdl_X, s = "lambda.min"))[-1]
+selected_X <- which(beta_X != 0)
+
+cat("X-only selected:", length(selected_X), "\n")
+cat("X-only true signals:",
+    sum(beta0[selected_X] != 0), "\n")
 
 all_res <- data.frame()
 

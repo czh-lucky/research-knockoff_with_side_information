@@ -1,5 +1,6 @@
 library(parallel)
 
+start_time <- Sys.time()
 # 开启5个并行进程
 n_cores <- 5
 cl <- makeCluster(n_cores)
@@ -10,13 +11,14 @@ rscript_path <- file.path(R.home("bin"),"Rscript")
 cat(sprintf("[%s] 已启动 %d 个并行进程，开始运行前 10 组模拟(1~10)...\n", Sys.time(), n_cores))
 
 # 运行 1 到 10 组
+dir.create("./logs/Xk", recursive = TRUE, showWarnings = FALSE)
 parLapply(cl, 1:10, function(i, exec_path){
   
-  log_file <- sprintf("./Xk/b%s.log", i)
+  log_file <- sprintf("./logs/Xk/b%s.log", i)
 
   system2(
     command = exec_path,
-    args = c("generate_Xk.R", as.character(i)),
+    args = c("./scripts/01_generate_Xk.R", as.character(i)),
     stdout = log_file,
     stderr = log_file
   )
@@ -25,5 +27,8 @@ parLapply(cl, 1:10, function(i, exec_path){
 # 释放资源
 stopCluster(cl)
 
+elapsed <- as.numeric(difftime(Sys.time(), start_time, units = "secs"))
+
 cat("Finished.\n")
+cat("Total elapsed time:", elapsed, "seconds\n")
 # cat(sprintf("[%s] 前 10 组模拟已全部计算完成！", Sys.time()))
