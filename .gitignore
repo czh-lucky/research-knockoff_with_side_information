@@ -1,0 +1,16 @@
+# Data files
+data/
+
+# Generated results
+results/
+
+# Logs
+logs/
+
+# R environment
+.Rhistory
+.RData
+.Rproj.user/
+
+# Python cache
+__pycache__/
