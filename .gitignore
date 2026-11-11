@@ -1,6 +1,9 @@
 # Data files
 data/
 
+# Test files
+notebooks/
+
 # Generated results
 results/
 
